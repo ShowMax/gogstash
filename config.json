@@ -1,0 +1,28 @@
+{
+    "input": [
+        {
+            "type": "socket",
+            "socket": "dup",
+            "address": "/run/showmax/socket_to_amqp.sock"
+        }
+    ],
+    "output": [
+      {
+        "type": "stdout"
+      },
+      {
+        "type": "amqp",
+
+        "urls": [
+          "amqp://logs:hQgeF9SfyaRLVU@logs-rabbitmq01.de.showmax.cc:5672//logs",
+          "amqp://logs:hQgeF9SfyaRLVU@logs-rabbitmq02.de.showmax.cc:5672//logs"
+        ],
+        "routing_key": "%{msg_type}.%{service}",
+        "exchange": "amq.topic",
+        "exchange_type": "topic",
+        "exchange_durable": true,
+        "exchange_auto_delete": false,
+        "persistent": false
+      }
+    ]
+}
