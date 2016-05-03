@@ -3,7 +3,6 @@ package inputsyslog
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net"
 	"os"
@@ -104,12 +103,12 @@ func (i *InputConfig) start(logger *logrus.Logger, evchan chan logevent.LogEvent
 	server.Boot()
 
 	go func(channel syslog.LogPartsChannel) {
+		// TODO use generic filters list
 		for event := range channel {
 			for old, new := range i.Mutate {
 				event[new] = event[old]
 				delete(event, old)
 			}
-			fmt.Println(event)
 			ts := event["timestamp"].(time.Time)
 			delete(event, "timestamp")
 
