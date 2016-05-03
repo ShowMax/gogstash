@@ -34,6 +34,7 @@ type InputConfig struct {
 	Socket  string `json:"socket"`  // Type of socket, must be one of ["tcp", "udp", "unixgram"].
 	Address string `json:"address"` // For UDP/TCP, address must have the form `host:port`. For Unigram socket, the address must be a file system path.
 	Format  string `json:"format"`  // RFC to use to decode syslog message. Must be one of ["automatic", "RFC3164", "RFC5424", "RFC6587"]. Default: "automatic".
+	Mutate  map[string]string
 }
 
 // DefaultInputConfig returns an InputConfig struct with default values
@@ -104,6 +105,10 @@ func (i *InputConfig) start(logger *logrus.Logger, evchan chan logevent.LogEvent
 
 	go func(channel syslog.LogPartsChannel) {
 		for event := range channel {
+			for old, new := range i.Mutate {
+				event[new] = event[old]
+				delete(event, old)
+			}
 			fmt.Println(event)
 			ts := event["timestamp"].(time.Time)
 			delete(event, "timestamp")
