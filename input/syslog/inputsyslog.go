@@ -30,10 +30,11 @@ var (
 // InputConfig holds the output configuration json fields
 type InputConfig struct {
 	config.InputConfig
-	Socket  string `json:"socket"`  // Type of socket, must be one of ["tcp", "udp", "unixgram"].
-	Address string `json:"address"` // For UDP/TCP, address must have the form `host:port`. For Unigram socket, the address must be a file system path.
-	Format  string `json:"format"`  // RFC to use to decode syslog message. Must be one of ["automatic", "RFC3164", "RFC5424", "RFC6587"]. Default: "automatic".
-	Mutate  map[string]string
+	Socket    string            `json:"socket"`  // Type of socket, must be one of ["tcp", "udp", "unixgram"].
+	Address   string            `json:"address"` // For UDP/TCP, address must have the form `host:port`. For Unigram socket, the address must be a file system path.
+	Format    string            `json:"format"`  // RFC to use to decode syslog message. Must be one of ["automatic", "RFC3164", "RFC5424", "RFC6587"]. Default: "automatic".
+	Mutate    map[string]string `json:"mutate"`
+	AddFields map[string]string `json:"add_field"`
 }
 
 // DefaultInputConfig returns an InputConfig struct with default values
@@ -109,6 +110,10 @@ func (i *InputConfig) start(logger *logrus.Logger, evchan chan logevent.LogEvent
 				event[new] = event[old]
 				delete(event, old)
 			}
+			for field, value := range i.AddFields {
+				event[field] = value
+			}
+
 			ts := event["timestamp"].(time.Time)
 			delete(event, "timestamp")
 
