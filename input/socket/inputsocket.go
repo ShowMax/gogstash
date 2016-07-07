@@ -57,11 +57,8 @@ func (i *InputConfig) start(logger *logrus.Logger, inchan config.InChan) {
 	switch i.Socket {
 	case "unix", "unixpacket":
 		// Remove existing unix socket and create path if needed
-		err := os.Remove(i.Address)
-		if err != nil {
-			logger.Fatal(err)
-		}
-		err = os.MkdirAll(filepath.Dir(i.Address), 0755)
+		os.Remove(i.Address)
+		err := os.MkdirAll(filepath.Dir(i.Address), 0755)
 		if err != nil {
 			logger.Fatal(err)
 		}
