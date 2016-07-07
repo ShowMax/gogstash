@@ -6,6 +6,7 @@ import (
 	"io"
 	"net"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/Sirupsen/logrus"
@@ -55,8 +56,9 @@ func (i *InputConfig) start(logger *logrus.Logger, inchan config.InChan) {
 
 	switch i.Socket {
 	case "unix", "unixpacket":
-		// Remove existing unix socket
+		// Remove existing unix socket and create path if needed
 		os.Remove(i.Address)
+		os.MkdirAll(filepath.Dir(i.Address))
 		// Listen to socket
 		address, err := net.ResolveUnixAddr(i.Socket, i.Address)
 		if err != nil {
