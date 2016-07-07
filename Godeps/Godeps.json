@@ -110,7 +110,8 @@
 		},
 		{
 			"ImportPath": "github.com/go-fsnotify/fsnotify",
-			"Rev": "836bfd95fecc0f1511dd66bdbf2b5b61ab8b00b6"
+			"Comment": "v1.3.0",
+			"Rev": "30411dbcefb7a1da7e84f75530ad3abe4011b4f8"
 		},
 		{
 			"ImportPath": "github.com/golang/protobuf/proto",
@@ -228,6 +229,7 @@
 		},
 		{
 			"ImportPath": "gopkg.in/olivere/elastic.v3",
+			"Comment": "v3.0.31",
 			"Rev": "2594d14da9d16fb44b8153d2db83dbea04b504e8"
 		},
 		{
