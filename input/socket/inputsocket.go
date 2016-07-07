@@ -58,7 +58,7 @@ func (i *InputConfig) start(logger *logrus.Logger, inchan config.InChan) {
 	case "unix", "unixpacket":
 		// Remove existing unix socket and create path if needed
 		os.Remove(i.Address)
-		os.MkdirAll(filepath.Dir(i.Address))
+		os.MkdirAll(filepath.Dir(i.Address), 0755)
 		// Listen to socket
 		address, err := net.ResolveUnixAddr(i.Socket, i.Address)
 		if err != nil {
